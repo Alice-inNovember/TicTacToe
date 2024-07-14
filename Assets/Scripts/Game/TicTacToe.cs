@@ -12,6 +12,14 @@ namespace Game
 	{
 		[SerializeField] private List<TileBlock> tileBlocks;
 
+		private void Start()
+		{
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.PlayerTileClicked, this);
+			EventManager.Instance.AddListener(EEventType.EnemyTileClicked, this);
+			EventManager.Instance.AddListener(EEventType.TilePointerEnter, this);
+			EventManager.Instance.AddListener(EEventType.TilePointerExit, this);
+		}
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			Debug.Log(eventType);
@@ -31,16 +39,16 @@ namespace Game
 					if (param != null)
 						OnTileClick((Vector2Int)param, GameManager.Instance.enemyTileType);
 					break;
+				case EEventType.TilePointerEnter:
+					if (param != null)
+						SetFocus((Vector2Int)param);
+					break;
+				case EEventType.TilePointerExit:
+					ResetFocus();
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
 			}
-		}
-		
-		private void Start()
-		{
-			EventManager.Instance.AddListener(EEventType.GameStart, this);
-			EventManager.Instance.AddListener(EEventType.PlayerTileClicked, this);
-			EventManager.Instance.AddListener(EEventType.EnemyTileClicked, this);
 		}
 
 		private void OnTileClick(Vector2Int id, TileType hwo)
@@ -63,8 +71,34 @@ namespace Game
 				block.SetBlock(block.Type, interactable);
 		}
 
+		private void SetFocus(Vector2Int id)
+		{
+			if (tileBlocks[id.y].IsComplete())
+			{
+				foreach (var tileBlock in tileBlocks)
+				{
+					tileBlock.SetFocusActive(true);
+				}
+			}
+			else
+			{
+				tileBlocks[id.y].SetFocusActive(true);
+			}
+		}
+
+		private void ResetFocus()
+		{
+			foreach (var tileBlock in tileBlocks)
+			{
+				tileBlock.SetFocusActive(false);
+			}
+		}
+
 		private void TileSet(Vector2Int id)
 		{
+			foreach (var tileBlock in tileBlocks)
+				tileBlock.ResetHilight();
+
 			tileBlocks[id.x].SetTile(id.y, GameManager.Instance.turn, false);
 			tileBlocks[id.x].CheckComplete(); //작은 TTT 의 결과 확인
 			// CheckComplete(); // 본인의 결과 확인

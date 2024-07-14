@@ -8,6 +8,8 @@
 		Reset,
 		PlayerTileClicked,
 		EnemyTileClicked,
+		TilePointerEnter,
+		TilePointerExit,
 		UIStateChange
 	}
 }

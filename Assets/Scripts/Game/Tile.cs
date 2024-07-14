@@ -1,21 +1,23 @@
 ﻿using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Util.EventSystem;
 
 namespace Game
 {
-	public class Tile : MonoBehaviour, IEventListener
+	public class Tile : MonoBehaviour, IEventListener, IPointerEnterHandler, IPointerExitHandler
 	{
 		public TileType Type { get; private set; }
 		private Vector2Int _id;
 		private Button _button;
 		private TMP_Text _text;
-		
+		private void Start()
+		{
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.Reset, this);
+		}
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
@@ -38,25 +40,30 @@ namespace Game
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
 			}
 		}
-
-		private void Start()
-		{
-			EventManager.Instance.AddListener(EEventType.GameStart, this);
-			EventManager.Instance.AddListener(EEventType.Reset, this);
-		}
-
+		
 		public void Init(Vector2Int id)
 		{
 			_id = id;
 			_text = GetComponentInChildren<TMP_Text>();
 			_button = GetComponent<Button>();
 			_button.onClick.AddListener(OnButtonClick);
+			
 		}
 
 		private void OnButtonClick()
 		{
 			Debug.Log("OnButtonClick" + _id.x + _id.y);
 			EventManager.Instance.PostNotification(EEventType.PlayerTileClicked, this, _id);
+		}
+
+		public void OnPointerEnter(PointerEventData eventData)
+		{
+			EventManager.Instance.PostNotification(EEventType.TilePointerEnter, this, _id);
+		}
+
+		public void OnPointerExit(PointerEventData eventData)
+		{
+			EventManager.Instance.PostNotification(EEventType.TilePointerExit, this);
 		}
 
 		public void SetTile(TileType type, bool interactable)
@@ -70,6 +77,11 @@ namespace Game
 				TileType.X => "X",
 				_ => throw new ArgumentOutOfRangeException()
 			};
+		}
+
+		public void SetHighlight(bool value)
+		{
+			GetComponentInChildren<TMP_Text>().color = value ? new Color(0, 1, 0.677f) : Color.white;
 		}
 	}
 }

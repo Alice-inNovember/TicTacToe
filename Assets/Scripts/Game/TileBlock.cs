@@ -16,6 +16,7 @@ namespace Game
 		[SerializeField] private GameObject panel;
 		[SerializeField] public int id;
 		[SerializeField] private TMP_Text text;
+		[SerializeField] private GameObject focus;
 
 		private bool _isComplete;
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
@@ -112,9 +113,23 @@ namespace Game
 			};
 		}
 
+		public void SetFocusActive(bool value)
+		{
+			focus.SetActive(value);
+		}
+
 		public void SetTile(int id, TileType type, bool interactable)
 		{
 			Tiles[id].SetTile(type, interactable);
+			Tiles[id].SetHighlight(true);
+		}
+
+		public void ResetHilight()
+		{
+			foreach (var tile in Tiles)
+			{
+				tile.SetHighlight(false);
+			}
 		}
 	}
 }
