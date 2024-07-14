@@ -6,7 +6,6 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Util.EventSystem;
-using EventType = Util.EventSystem.EventType;
 
 namespace Game
 {
@@ -17,23 +16,23 @@ namespace Game
 		private Button _button;
 		private TMP_Text _text;
 		
-		public void OnEvent(EventType eventType, Component sender, object param = null)
+		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
 			{
-				case EventType.ProgramStart:
+				case EEventType.ProgramStart:
 					break;
-				case EventType.ServerConnection:
+				case EEventType.ServerConnection:
 					break;
-				case EventType.GameStart:
+				case EEventType.GameStart:
 					SetTile( TileType.Null, true);
 					break;
-				case EventType.Reset:
+				case EEventType.Reset:
 					SetTile(TileType.Null, true);
 					break;
-				case EventType.PlayerTileClicked:
+				case EEventType.PlayerTileClicked:
 					break;
-				case EventType.EnemyTileClicked:
+				case EEventType.EnemyTileClicked:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
@@ -42,8 +41,8 @@ namespace Game
 
 		private void Start()
 		{
-			EventManager.Instance.AddListener(EventType.GameStart, this);
-			EventManager.Instance.AddListener(EventType.Reset, this);
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.Reset, this);
 		}
 
 		public void Init(Vector2Int id)
@@ -57,7 +56,7 @@ namespace Game
 		private void OnButtonClick()
 		{
 			Debug.Log("OnButtonClick" + _id.x + _id.y);
-			EventManager.Instance.PostNotification(EventType.PlayerTileClicked, this, _id);
+			EventManager.Instance.PostNotification(EEventType.PlayerTileClicked, this, _id);
 		}
 
 		public void SetTile(TileType type, bool interactable)

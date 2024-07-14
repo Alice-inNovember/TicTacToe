@@ -5,7 +5,6 @@ using Network;
 using UI;
 using UnityEngine;
 using Util.EventSystem;
-using EventType = Util.EventSystem.EventType;
 
 namespace Game
 {
@@ -13,22 +12,22 @@ namespace Game
 	{
 		[SerializeField] private List<TileBlock> tileBlocks;
 
-		public void OnEvent(EventType eventType, Component sender, object param = null)
+		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			Debug.Log(eventType);
 			switch (eventType)
 			{
-				case EventType.ProgramStart:
+				case EEventType.ProgramStart:
 					break;
-				case EventType.ServerConnection:
+				case EEventType.ServerConnection:
 					break;
-				case EventType.GameStart:
+				case EEventType.GameStart:
 					break;
-				case EventType.PlayerTileClicked:
+				case EEventType.PlayerTileClicked:
 					if (param != null)
 						OnTileClick((Vector2Int)param, GameManager.Instance.playerTileType);
 					break;
-				case EventType.EnemyTileClicked:
+				case EEventType.EnemyTileClicked:
 					if (param != null)
 						OnTileClick((Vector2Int)param, GameManager.Instance.enemyTileType);
 					break;
@@ -39,9 +38,9 @@ namespace Game
 		
 		private void Start()
 		{
-			EventManager.Instance.AddListener(EventType.GameStart, this);
-			EventManager.Instance.AddListener(EventType.PlayerTileClicked, this);
-			EventManager.Instance.AddListener(EventType.EnemyTileClicked, this);
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.PlayerTileClicked, this);
+			EventManager.Instance.AddListener(EEventType.EnemyTileClicked, this);
 		}
 
 		private void OnTileClick(Vector2Int id, TileType hwo)

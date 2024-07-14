@@ -1,12 +1,13 @@
 ﻿namespace Util.EventSystem
 {
-	public enum EventType
+	public enum EEventType
 	{
 		ProgramStart,
 		ServerConnection,
 		GameStart,
 		Reset,
 		PlayerTileClicked,
-		EnemyTileClicked
+		EnemyTileClicked,
+		UIStateChange
 	}
 }

@@ -9,7 +9,7 @@ namespace Util.EventSystem
 	public class EventManager : MonoBehaviourSingleton<EventManager>
 	{
 		//이벤트 리스너 리스트 관리
-		private Dictionary<EventType, List<IEventListener>> _listeners = new();
+		private Dictionary<EEventType, List<IEventListener>> _listeners = new();
 
 		private void OnEnable()
 		{
@@ -26,7 +26,7 @@ namespace Util.EventSystem
 			RefreshListeners();
 		}
 
-		public void AddListener(EventType eventType, IEventListener listener)
+		public void AddListener(EEventType eventType, IEventListener listener)
 		{
 			// Debug.Log("AddListener : " + eventType);
 			if (_listeners.TryGetValue(eventType, out var listenList))
@@ -39,7 +39,7 @@ namespace Util.EventSystem
 			_listeners.Add(eventType, listenList);
 		}
 
-		public void PostNotification(EventType eventType, Component sender, object param = null)
+		public void PostNotification(EEventType eventType, Component sender, object param = null)
 		{
 			//이벤트 리스너(대기자)가 없으면 그냥 리턴.
 			if (!_listeners.TryGetValue(eventType, out var listenList))
@@ -50,7 +50,7 @@ namespace Util.EventSystem
 				t.OnEvent(eventType, sender, param);
 		}
 
-		public void RemoveEvent(EventType eventType)
+		public void RemoveEvent(EEventType eventType)
 		{
 			_listeners.Remove(eventType);
 		}
@@ -58,7 +58,7 @@ namespace Util.EventSystem
 		private void RefreshListeners()
 		{
 			//임시 Dictionary 생성
-			var tmpListeners = new Dictionary<EventType, List<IEventListener>>();
+			var tmpListeners = new Dictionary<EEventType, List<IEventListener>>();
 
 			//씬이 바뀜에 따라 리스너가 Null이 된 부분을 삭제해준다.
 			foreach (var item in _listeners)

@@ -2,13 +2,10 @@ using System;
 using Game;
 using Network;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Util.EventSystem;
 using Util.SingletonSystem;
-using EventType = Util.EventSystem.EventType;
 
 namespace UI
 {
@@ -22,17 +19,6 @@ namespace UI
 	}
 	public class UIManager : MonoBehaviourSingleton<UIManager>, IEventListener
 	{
-		[Header("UI Set")]
-		[SerializeField] private GameObject menuUISet;
-	
-		[Header("Animation UI")]
-		[SerializeField] private AnimationUI loginToStartB;
-		[SerializeField] private AnimationUI startB;
-		[SerializeField] private AnimationUI logoUI;
-		[SerializeField] private AnimationUI creditUI;
-		[SerializeField] private AnimationUI loginUI;
-		[SerializeField] private AnimationUI matchMakingUI;
-	
 		[Header("Buttons")]
 		[SerializeField] private Button toStartButton;
 		[SerializeField] private Button startButton;
@@ -48,7 +34,6 @@ namespace UI
 		[SerializeField] private TMP_InputField loginInput;
 
 		[Header("InGameUI")]
-		[SerializeField] private AnimationUI inGameUI;
 		[SerializeField] private TMP_Text currentTurnText;
 		[SerializeField] private TMP_Text gameTimeText;
 		[SerializeField] private TMP_Text enemyTypeText;
@@ -57,14 +42,28 @@ namespace UI
 		[SerializeField] private TMP_Text playerNameText;
 
 		[Header("ResultUI")]
-		[SerializeField] private AnimationUI resultUI;
 		[SerializeField] private TMP_Text resultText;
 		[SerializeField] private Button toLobbyButton;
 
-		public void SetResultText(bool playerWin)
+		public const float AnimationTime = 0.5f;
+
+		private void Start()
 		{
-			resultText.text = playerWin ? "You Win" : "You Lose";
+			EventManager.Instance.AddListener(EEventType.ProgramStart, this);
+			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
+			toStartButton.onClick.AddListener(()=>EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
+			startButton.onClick.AddListener(()=> EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login));
+			loginButton.onClick.AddListener(LoginButton);
+			matchButton.onClick.AddListener(GameManager.Instance.StartMachMaking);
+			toLobbyButton.onClick.AddListener(() =>
+			{
+				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
+				GameManager.Instance.SetGameToLogin();
+				NetworkManager.Instance.DisconnectServer();
+				EventManager.Instance.PostNotification(EEventType.Reset, this);
+			});
 		}
+		
 		public void SetCurrentTurnText()
 		{
 			var type = GameManager.Instance.turn == TileType.O ? "O" : "X";
@@ -95,25 +94,6 @@ namespace UI
 		{
 			playerNameText.text = playerName;
 		}
-		
-		public const float AnimationTime = 0.5f;
-
-		private void Start()
-		{
-			EventManager.Instance.AddListener(EventType.ProgramStart, this);
-			EventManager.Instance.AddListener(EventType.ServerConnection, this);
-			toStartButton.onClick.AddListener(()=>SetUI(EuiState.Start));
-			startButton.onClick.AddListener(()=> SetUI(EuiState.Login));
-			loginButton.onClick.AddListener(LoginButton);
-			matchButton.onClick.AddListener(GameManager.Instance.StartMachMaking);
-			toLobbyButton.onClick.AddListener(() =>
-			{
-				SetUI(EuiState.Login);
-				GameManager.Instance.SetGameToLogin();
-				NetworkManager.Instance.DisconnectServer();
-				EventManager.Instance.PostNotification(EventType.Reset, this);
-			});
-		}
 		private void LoginButton()
 		{
 			if (loginInput.text.Length == 0)
@@ -125,13 +105,13 @@ namespace UI
 			GameManager.Instance.playerName = loginInput.text;
 			NetworkManager.Instance.TryConnectServer(loginInput.text);
 		}
-		public void OnEvent(EventType eventType, Component sender, object param = null)
+		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
 			{
-				case EventType.ProgramStart:
+				case EEventType.ProgramStart:
 					break;
-				case EventType.ServerConnection:
+				case EEventType.ServerConnection:
 					if (param != null)
 						ServerConnectionAction((EConnectResult)param);
 					break;
@@ -152,77 +132,28 @@ namespace UI
 			switch (result)
 			{
 				case EConnectResult.Success:
-					SetUI(EuiState.Lobby);
 					loginResultText.text = "Server Connect Success";
+					EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Lobby);
 					break;
 				case EConnectResult.TimeOut:
-					SetUI(EuiState.Login);
 					loginResultText.text = "Server TimeOut, Try Again";
+					EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
 					break;
 				case EConnectResult.Disconnect:
-					SetUI(EuiState.Login);
 					loginResultText.text = "Server Disconnect, Try Again";
+					EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
 					break;
 				case EConnectResult.Error:
-					SetUI(EuiState.Login);
 					loginResultText.text = "Server Error, Try Again";
+					EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(result), result, null);
 			}
 		}
-		public void SetUI(EuiState state, object param = null)
+		public void SetResultInfo(TileType winner)
 		{
-			switch (state)
-			{
-				case EuiState.Start:
-					menuUISet.SetActive(true);
-					loginToStartB.Hide();
-					startB.Show();
-					logoUI.Show();
-					creditUI.Show();
-					loginUI.Hide();
-					inGameUI.Hide();
-					resultUI.Hide();
-					matchMakingUI.Hide();
-					break;
-				case EuiState.Login:
-					menuUISet.SetActive(true);
-					loginToStartB.Show();
-					startB.Hide();
-					logoUI.Hide();
-					creditUI.Hide();
-					loginUI.Show();
-					inGameUI.Hide();
-					resultUI.Hide();
-					matchMakingUI.Hide();
-					break;
-				case EuiState.Lobby:
-					SetActiveUserText("--");
-					menuUISet.SetActive(true);
-					loginToStartB.Hide();
-					startB.Hide();
-					logoUI.Hide();
-					creditUI.Hide();
-					loginUI.Hide();
-					inGameUI.Hide();
-					resultUI.Hide();
-					matchMakingUI.Show();
-					break;
-				case EuiState.InGame:
-					menuUISet.SetActive(false);
-					inGameUI.Show();
-					resultUI.Hide();
-					break;
-				case EuiState.Result:
-					SetResultText((bool)param);
-					menuUISet.SetActive(false);
-					inGameUI.Hide();
-					resultUI.Show();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(state), state, null);
-			}
+			resultText.text = (winner == GameManager.Instance.playerTileType ? "You Win" : "You Lose");
 		}
 	}
 }

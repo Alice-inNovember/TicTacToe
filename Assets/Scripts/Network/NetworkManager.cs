@@ -8,7 +8,6 @@ using UnityEngine;
 using Util;
 using Util.EventSystem;
 using Util.SingletonSystem;
-using EventType = Util.EventSystem.EventType;
 
 namespace Network
 {
@@ -39,25 +38,25 @@ namespace Network
 				_stream = _client.GetStream();
 				Receive();
 				Debug.Log("서버에 성공적으로 연결되었습니다.");
-				EventManager.Instance.PostNotification(EventType.ServerConnection, this, EConnectResult.Success);
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Success);
 				await Send(new Message(EMessageType.MT_SET_NAME, userName));
 			}
 			catch (OperationCanceledException)
 			{
 				Debug.Log("연결 실패: 타임아웃");
 				DisconnectServer();
-				EventManager.Instance.PostNotification(EventType.ServerConnection, this, EConnectResult.TimeOut);
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.TimeOut);
 			}
 			catch (Exception ex)
 			{
 				Debug.Log($"연결 실패: {ex.Message}");
 				DisconnectServer();
-				EventManager.Instance.PostNotification(EventType.ServerConnection, this, EConnectResult.Error);
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Error);
 			}
 		}
 		public void DisconnectServer()
 		{
-			EventManager.Instance.PostNotification(EventType.ServerConnection, this, EConnectResult.Disconnect);
+			EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 			Debug.Log("Server disconnected");
 			_stream?.Dispose();
 			_client?.Dispose();
@@ -140,7 +139,7 @@ namespace Network
 				case EMessageType.MT_USER_ACTION:
 					var temp = msg.Arg().Split(",");
 					var id = new Vector2Int(int.Parse(temp[0]),int.Parse(temp[1]));
-					EventManager.Instance.PostNotification(EventType.EnemyTileClicked, this, id);
+					EventManager.Instance.PostNotification(EEventType.EnemyTileClicked, this, id);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Util.EventSystem;
 using Util.SingletonSystem;
-using EventType = Util.EventSystem.EventType;
 
 namespace Game
 {
@@ -31,21 +30,21 @@ namespace Game
 		private CancellationTokenSource _matchTimeCountCancelToken;
 		public string playerName;
 	
-		public void OnEvent(EventType eventType, Component sender, object param = null)
+		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
 			{
-				case EventType.ProgramStart:
+				case EEventType.ProgramStart:
 					break;
-				case EventType.ServerConnection:
+				case EEventType.ServerConnection:
 					if (param != null)
 						ServerConnectionAction((EConnectResult)param);
 					break;
-				case EventType.GameStart:
+				case EEventType.GameStart:
 					break;
-				case EventType.PlayerTileClicked:
+				case EEventType.PlayerTileClicked:
 					break;
-				case EventType.EnemyTileClicked:
+				case EEventType.EnemyTileClicked:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
@@ -54,7 +53,7 @@ namespace Game
 
 		private void Start()
 		{
-			EventManager.Instance.AddListener(EventType.ServerConnection, this);
+			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
 			Application.runInBackground = true;
 			state = EGameState.PreLogin;
 			playerTileType = TileType.Null;
@@ -89,7 +88,7 @@ namespace Game
 			UIManager.Instance.SetEnemyTypeText();
 			UIManager.Instance.SetPlayerName(playerName);
 			UIManager.Instance.SetPlayerTypeText();
-			UIManager.Instance.SetUI(EuiState.InGame);
+			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.InGame);
 			Debug.Log("My type : " + playerType + " | EnemyName : " + enemyName);
 			state = EGameState.PreGame;
 			StartCoroutine(GameStart());
@@ -105,7 +104,7 @@ namespace Game
 			Debug.Log("1");
 			yield return new WaitForSeconds(1);
 			Debug.Log("Start!");
-			EventManager.Instance.PostNotification(EventType.GameStart, this);
+			EventManager.Instance.PostNotification(EEventType.GameStart, this);
 			state = EGameState.InGame;
 		}
 		private void MatchStop()
@@ -116,18 +115,8 @@ namespace Game
 		public void GameOver(TileType winnerTileType)
 		{
 			state = EGameState.PostGame;
-			switch (winnerTileType)
-			{
-				case TileType.Null:
-					UIManager.Instance.SetUI(EuiState.Result, playerTileType);
-					break;
-				case TileType.O: 
-					UIManager.Instance.SetUI(EuiState.Result, playerTileType == TileType.O);
-					break;
-				case TileType.X: 
-					UIManager.Instance.SetUI(EuiState.Result, playerTileType == TileType.X);
-					break;
-			}
+			UIManager.Instance.SetResultInfo(winnerTileType);
+			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Result); 
 		}
 		private async void MatchMakingTimeCount()
 		{
