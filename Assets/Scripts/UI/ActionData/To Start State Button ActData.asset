@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7d2c16f40c4bdfb00d62ab819c06d7, type: 3}
   m_Name: To Start State Button ActData
   m_EditorClassIdentifier: 
+  initalState: 1
   doChangeActive: 1
   doChangeTransform: 1
   showPosition: {x: -50, y: 0}
   showSize: {x: 100, y: 400}
-  showScale: {x: 1, y: 1, z: 0}
+  showScale: {x: 1, y: 1, z: 1}
   hidePosition: {x: 50, y: 0}
   hideSize: {x: 100, y: 400}
   hideScale: {x: 0, y: 0, z: 0}
-  uiStateActions: []
+  uiStateActions:
+  - uiState: 1
+    visualState: 0

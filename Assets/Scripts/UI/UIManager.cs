@@ -19,6 +19,9 @@ namespace UI
 	}
 	public class UIManager : MonoBehaviourSingleton<UIManager>, IEventListener
 	{
+		[Header("Info")]
+		[SerializeField] private EuiState curruntState;
+		
 		[Header("Buttons")]
 		[SerializeField] private Button toStartButton;
 		[SerializeField] private Button startButton;
@@ -51,6 +54,7 @@ namespace UI
 		{
 			EventManager.Instance.AddListener(EEventType.ProgramStart, this);
 			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
+			EventManager.Instance.AddListener(EEventType.UIStateChange, this);
 			toStartButton.onClick.AddListener(()=>EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
 			startButton.onClick.AddListener(()=> EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login));
 			loginButton.onClick.AddListener(LoginButton);
@@ -62,6 +66,25 @@ namespace UI
 				NetworkManager.Instance.DisconnectServer();
 				EventManager.Instance.PostNotification(EEventType.Reset, this);
 			});
+		}
+		
+		public void OnEvent(EEventType eventType, Component sender, object param = null)
+		{
+			switch (eventType)
+			{
+				case EEventType.ProgramStart:
+					break;
+				case EEventType.ServerConnection:
+					if (param != null)
+						ServerConnectionAction((EConnectResult)param);
+					break;
+				case EEventType.UIStateChange:
+					if (param != null)
+						curruntState = (EuiState)param;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
+			}
 		}
 		
 		public void SetCurrentTurnText()
@@ -105,20 +128,7 @@ namespace UI
 			GameManager.Instance.playerName = loginInput.text;
 			NetworkManager.Instance.TryConnectServer(loginInput.text);
 		}
-		public void OnEvent(EEventType eventType, Component sender, object param = null)
-		{
-			switch (eventType)
-			{
-				case EEventType.ProgramStart:
-					break;
-				case EEventType.ServerConnection:
-					if (param != null)
-						ServerConnectionAction((EConnectResult)param);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
-			}
-		}
+		
 		public void SetActiveUserText(string number)
 		{
 			activeUserText.text = "ActiveUser : " + number;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7d2c16f40c4bdfb00d62ab819c06d7, type: 3}
   m_Name: Logo UI ActData
   m_EditorClassIdentifier: 
+  initalState: 0
   doChangeActive: 0
   doChangeTransform: 1
   showPosition: {x: -300, y: 0}
@@ -19,5 +20,7 @@ MonoBehaviour:
   showScale: {x: 1, y: 1, z: 1}
   hidePosition: {x: -300, y: 0}
   hideSize: {x: 600, y: 600}
-  hideScale: {x: 0.665, y: 0.665, z: 1}
-  uiStateActions: []
+  hideScale: {x: 0.665, y: 0.665, z: 0}
+  uiStateActions:
+  - uiState: 0
+    visualState: 0

@@ -18,7 +18,7 @@ namespace Game
 		MatchMaking,
 		PreGame,
 		InGame,
-		PostGame,
+		PostGame
 	}
 
 	public class GameManager : MonoBehaviourSingleton<GameManager>, IEventListener
@@ -91,18 +91,12 @@ namespace Game
 			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.InGame);
 			Debug.Log("My type : " + playerType + " | EnemyName : " + enemyName);
 			state = EGameState.PreGame;
-			StartCoroutine(GameStart());
+			GameStart();
 		}
-		IEnumerator GameStart()
+		private void GameStart()
 		{
 			turn = TileType.O;
 			UIManager.Instance.SetCurrentTurnText();
-			Debug.Log("3");
-			yield return new WaitForSeconds(1);
-			Debug.Log("2");
-			yield return new WaitForSeconds(1);
-			Debug.Log("1");
-			yield return new WaitForSeconds(1);
 			Debug.Log("Start!");
 			EventManager.Instance.PostNotification(EEventType.GameStart, this);
 			state = EGameState.InGame;

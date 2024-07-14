@@ -8,6 +8,9 @@ namespace UI
 	public class AnimationUIActionData : ScriptableObject
 	{
 		[Header("UI Transform")]
+		public UIVisualState initalState;
+		
+		[Header("UI Transform")]
 		public bool doChangeActive;
 		public bool doChangeTransform;
 		public Vector2 showPosition;
@@ -22,14 +25,10 @@ namespace UI
 
 		public UIVisualState GetUIVisualState(EuiState uiState)
 		{
-			foreach (var action in uiStateActions.Where(action => action.uiState == uiState))
-			{
-				return action.visualState;
-			}
-			return UIVisualState.Hide;
+			return uiStateActions.Any(action => action.uiState == uiState) ? UIVisualState.Show : UIVisualState.Hide;
 		}
 	}
-	
+
 	[Serializable]
 	public class StateAction
 	{

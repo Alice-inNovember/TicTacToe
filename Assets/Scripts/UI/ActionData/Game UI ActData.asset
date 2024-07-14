@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7d2c16f40c4bdfb00d62ab819c06d7, type: 3}
   m_Name: Game UI ActData
   m_EditorClassIdentifier: 
+  initalState: 1
   doChangeActive: 1
   doChangeTransform: 1
   showPosition: {x: 0, y: 0}
@@ -19,5 +20,7 @@ MonoBehaviour:
   showScale: {x: 0.75, y: 0.75, z: 1}
   hidePosition: {x: 0, y: 0}
   hideSize: {x: 1920, y: 1920}
-  hideScale: {x: 0, y: 0, z: 1}
-  uiStateActions: []
+  hideScale: {x: 0, y: 0, z: 0}
+  uiStateActions:
+  - uiState: 3
+    visualState: 0

@@ -578,11 +578,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3174697012599690804}
-  - {fileID: 1639063549}
-  - {fileID: 1851670369}
-  - {fileID: 1413603255}
   - {fileID: 1162803038}
   - {fileID: 836947804}
+  - {fileID: 1851670369}
+  - {fileID: 1413603255}
+  - {fileID: 1639063549}
   m_Father: {fileID: 2095752268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -640,15 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 0, y: 0}
-  showSize: {x: 0, y: 0}
-  showScale: {x: 0, y: 0, z: 0}
-  hidePosition: {x: 0, y: 0}
-  hideSize: {x: 0, y: 0}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 0
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: 600864ae10a45b1489b76e4d42b3ffeb, type: 2}
 --- !u!1 &194389649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,15 +1187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 0, y: 0}
-  showSize: {x: 1920, y: 1920}
-  showScale: {x: 0.75, y: 0.75, z: 1}
-  hidePosition: {x: 0, y: 0}
-  hideSize: {x: 1920, y: 1920}
-  hideScale: {x: 0, y: 0, z: 1}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: f2871d3476ca0344e98cf5785081cf33, type: 2}
 --- !u!1 &264918699
 GameObject:
   m_ObjectHideFlags: 0
@@ -3145,7 +3129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &836947804
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3180,15 +3164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 300, y: -100}
-  showSize: {x: 100, y: 100}
-  showScale: {x: 1, y: 1, z: 0}
-  hidePosition: {x: 300, y: -100}
-  hideSize: {x: 100, y: 100}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: e02a5d0634333ce448fff2e12bab3df7, type: 2}
 --- !u!1001 &843176443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5635,7 +5611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1162803038
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5670,15 +5646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 300, y: -100}
-  showSize: {x: 100, y: 100}
-  showScale: {x: 1, y: 1, z: 0}
-  hidePosition: {x: 300, y: -100}
-  hideSize: {x: 100, y: 100}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: 2925ab4349f60c848bde8ca10783e26f, type: 2}
 --- !u!1 &1167326492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6358,15 +6326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 0, y: 0}
-  showSize: {x: 1920, y: 1080}
-  showScale: {x: 1, y: 1, z: 1}
-  hidePosition: {x: 0, y: 0}
-  hideSize: {x: 0, y: 0}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: f8e498b9b1ac7114db5b82a6c57d4b28, type: 2}
 --- !u!1 &1346716687
 GameObject:
   m_ObjectHideFlags: 0
@@ -6746,15 +6706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 300, y: 100}
-  showSize: {x: 600, y: 400}
-  showScale: {x: 1, y: 1, z: 0}
-  hidePosition: {x: 300, y: 100}
-  hideSize: {x: 600, y: 200}
-  hideScale: {x: 1, y: 1, z: 0}
-  doChangeActive: 0
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: 0641ee405dadbc94fb7986464d114209, type: 2}
 --- !u!1 &1425114325
 GameObject:
   m_ObjectHideFlags: 0
@@ -7702,15 +7654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: 300, y: -200}
-  showSize: {x: 600, y: 200}
-  showScale: {x: 1, y: 1, z: 0}
-  hidePosition: {x: 300, y: -200}
-  hideSize: {x: 600, y: 200}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: a879f1d5b52a0c540a405aa729c8494e, type: 2}
 --- !u!1 &1641404252
 GameObject:
   m_ObjectHideFlags: 0
@@ -9266,15 +9210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: -300, y: 0}
-  showSize: {x: 600, y: 600}
-  showScale: {x: 1, y: 1, z: 1}
-  hidePosition: {x: -300, y: 0}
-  hideSize: {x: 600, y: 600}
-  hideScale: {x: 0.665, y: 0.665, z: 1}
-  doChangeActive: 0
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: 799af9a9b96769e46a28c3ea77ec408b, type: 2}
 --- !u!1 &1856241343
 GameObject:
   m_ObjectHideFlags: 0
@@ -10476,6 +10412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e86270293f8874e9ef6644f7d22d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curruntState: 0
   toStartButton: {fileID: 3777727333363856328}
   startButton: {fileID: 1639063550}
   loginButton: {fileID: 1757054414}
@@ -10974,7 +10911,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5072710845776262346
 GameObject:
   m_ObjectHideFlags: 0
@@ -11062,15 +10999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 0}
-  showPosition: {x: -50, y: 0}
-  showSize: {x: 100, y: 400}
-  showScale: {x: 1, y: 1, z: 0}
-  hidePosition: {x: 50, y: 0}
-  hideSize: {x: 100, y: 400}
-  hideScale: {x: 0, y: 0, z: 0}
-  doChangeActive: 1
-  doChangeTransform: 0
+  actionData: {fileID: 11400000, guid: 5030c15c7227bf644bc2ae53a54f38fd, type: 2}
 --- !u!114 &7945574639182808823
 MonoBehaviour:
   m_ObjectHideFlags: 0

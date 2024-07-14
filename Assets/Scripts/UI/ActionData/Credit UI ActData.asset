@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7d2c16f40c4bdfb00d62ab819c06d7, type: 3}
   m_Name: Credit UI ActData
   m_EditorClassIdentifier: 
+  initalState: 0
   doChangeActive: 0
   doChangeTransform: 1
   showPosition: {x: 300, y: 100}
   showSize: {x: 600, y: 400}
-  showScale: {x: 1, y: 1, z: 0}
+  showScale: {x: 1, y: 1, z: 1}
   hidePosition: {x: 300, y: 100}
   hideSize: {x: 600, y: 200}
   hideScale: {x: 1, y: 1, z: 0}
-  uiStateActions: []
+  uiStateActions:
+  - uiState: 0
+    visualState: 0
