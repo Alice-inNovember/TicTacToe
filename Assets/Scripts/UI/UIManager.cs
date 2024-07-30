@@ -58,11 +58,11 @@ namespace UI
 			toStartButton.onClick.AddListener(()=>EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
 			startButton.onClick.AddListener(()=> EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login));
 			loginButton.onClick.AddListener(LoginButton);
-			matchButton.onClick.AddListener(GameManager.Instance.StartMachMaking);
+			matchButton.onClick.AddListener(MatchMaking.Instance.StartMachMaking);
 			toLobbyButton.onClick.AddListener(() =>
 			{
 				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
-				GameManager.Instance.SetGameToLogin();
+				GameManager.Instance.SetGameState(EGameState.PreLogin);
 				NetworkManager.Instance.DisconnectServer();
 				EventManager.Instance.PostNotification(EEventType.Reset, this);
 			});
@@ -163,7 +163,10 @@ namespace UI
 		}
 		public void SetResultInfo(TileType winner)
 		{
-			resultText.text = (winner == GameManager.Instance.playerTileType ? "You Win" : "You Lose");
+			if (winner == TileType.Null)
+				resultText.text = "Draw";
+			else
+				resultText.text = (winner == GameManager.Instance.playerTileType ? "You Win" : "You Lose");
 		}
 	}
 }

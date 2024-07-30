@@ -130,7 +130,7 @@ namespace Network
 					UIManager.Instance.SetActiveUserText(msg.Arg());
 					break;
 				case EMessageType.MT_ROOM_CREATED:
-					GameManager.Instance.MatchFound(msg.Arg());
+					MatchMaking.Instance.MatchFound(msg.Arg());
 					break;
 				case EMessageType.MT_GAME_RESULT:
 					if (GameManager.Instance.state == EGameState.InGame && msg.Arg() == "Enemy escaped")

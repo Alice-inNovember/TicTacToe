@@ -127,6 +127,9 @@ namespace Game
 		public void CheckComplete()
 		{
 			var tileType = TileType.Null;
+			//무승부
+			if (tileBlocks.Count(block => block.IsComplete()) == 9)
+				GameManager.Instance.GameOver(TileType.Null);
 			for (var i = 0; i < 3; i++)
 			{
 				var h = 3 * i;
@@ -150,9 +153,6 @@ namespace Game
 				else if (tileBlocks[2].Type == tileBlocks[4].Type && tileBlocks[2].Type == tileBlocks[6].Type)
 					tileType = tileBlocks[2].Type;
 			}
-			//무승부
-			if (tileType == TileType.Null && tileBlocks.Count(block => block.Type == TileType.Null) == 0)
-				GameManager.Instance.GameOver(TileType.Null);
 			//결과
 			if (tileType == TileType.Null)
 				return;
