@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,58 +10,63 @@ namespace UI
 {
 	public class AnimationUI : MonoBehaviour, IEventListener
 	{
-		[SerializeField] private AnimationUIActionData actionData;
+		[Header("ActionInfo")]
+		[SerializeField] private ActionData defaultStateAction;
+		[SerializeField] private List<ActionData> uiStateActions;
+
 		private RectTransform _rect;
 
 		public void Start()
 		{
 			EventManager.Instance.AddListener(EEventType.UIStateChange, this);
 			_rect = GetComponent<RectTransform>();
-			if (actionData.initalState != UIVisualState.Hide)
-				return;
-			gameObject.SetActive(false);
-			Hide();
+			UIStateAction(UIManager.Instance.CurruntState);
 		}
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			if (eventType != EEventType.UIStateChange || param == null)
 				return;
-			UnityAction action = actionData.GetUIVisualState((EuiState)param) == UIVisualState.Show ? Show : Hide;
-			action();
+			UIStateAction((EuiState)param);
 		}
-		public void Show()
+		
+		private ActionData FindStateAction(EuiState uiState)
 		{
-			if (actionData.doChangeTransform)
-			{
-				_rect.DOPause();
-				_rect.transform.gameObject.SetActive(true);
-				_rect.DOAnchorPos(actionData.showPosition, UIManager.AnimationTime);
-				_rect.DOSizeDelta(actionData.showSize, UIManager.AnimationTime);
-				_rect.DOScale(actionData.showScale, UIManager.AnimationTime);
-			}
-			else
-			{
-				_rect.transform.gameObject.SetActive(true);
-			}
+			foreach (var action in uiStateActions.Where(action => action.targetState == uiState))
+				return action;
+			return defaultStateAction;
 		}
-		public void Hide()
+		
+		private void UIStateAction(EuiState uiState)
 		{
-			if (actionData.doChangeTransform)
+			var actionData = FindStateAction(uiState);
+
+			if (actionData.setActive)
+				gameObject.SetActive(true);
+
+			_rect.DOPause();
+			_rect.DOAnchorPos(actionData.position, UIManager.AnimationTime);
+			_rect.DOSizeDelta(actionData.size, UIManager.AnimationTime);
+			_rect.DOScale(actionData.scale, UIManager.AnimationTime).OnComplete(() => 
 			{
-				_rect.DOPause();
-				_rect.DOAnchorPos(actionData.hidePosition, UIManager.AnimationTime).OnComplete(() => 
-				{
-					if (actionData.doChangeActive)
-						_rect.transform.gameObject.SetActive(false);
-				});
-				_rect.DOSizeDelta(actionData.hideSize, UIManager.AnimationTime);
-				_rect.DOScale(actionData.hideScale, UIManager.AnimationTime);
-			}
-			else
-			{
-				if (actionData.doChangeActive)
-					_rect.transform.gameObject.SetActive(false);
-			}
+				if (actionData.setActive == false)
+					gameObject.SetActive(false);
+			});
 		}
+	}
+
+	[Serializable]
+	public class ActionData
+	{
+		[Header("State")]
+		public EuiState targetState;
+
+		[Header("Transform")]
+		public Vector2 position;
+		public Vector2 size;
+		public Vector3 scale;
+
+		[Header("Active")]
+		public bool setActive;
 	}
 }

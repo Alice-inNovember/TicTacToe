@@ -15,12 +15,13 @@ namespace UI
 		Login,
 		Lobby,
 		InGame,
-		Result
+		Result,
+		Default
 	}
 	public class UIManager : MonoBehaviourSingleton<UIManager>, IEventListener
 	{
 		[Header("Info")]
-		[SerializeField] private EuiState curruntState;
+		public EuiState CurruntState;
 		
 		[Header("Buttons")]
 		[SerializeField] private Button toStartButton;
@@ -80,7 +81,7 @@ namespace UI
 					break;
 				case EEventType.UIStateChange:
 					if (param != null)
-						curruntState = (EuiState)param;
+						CurruntState = (EuiState)param;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);

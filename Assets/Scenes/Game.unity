@@ -640,7 +640,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 600864ae10a45b1489b76e4d42b3ffeb, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1080}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 0
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1080}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
+  - targetState: 1
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1080}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
+  - targetState: 2
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1080}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &194389649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,7 +1208,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: f2871d3476ca0344e98cf5785081cf33, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1920}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 3
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1920}
+    scale: {x: 0.75, y: 0.75, z: 0.75}
+    setActive: 1
 --- !u!1 &264918699
 GameObject:
   m_ObjectHideFlags: 0
@@ -3181,7 +3213,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: e02a5d0634333ce448fff2e12bab3df7, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 300, y: -100}
+    size: {x: 100, y: 100}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 2
+    position: {x: 300, y: -100}
+    size: {x: 100, y: 100}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1001 &843176443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3512,56 +3555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba8f10d181534162b827b8332a02e555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &846620200
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 846620201}
-  - component: {fileID: 846620202}
-  m_Layer: 5
-  m_Name: GamePlay UI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &846620201
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846620200}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1359010804}
-  m_Father: {fileID: 955639891}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &846620202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846620200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: e320cc78f2147094597fe7bf5742530e, type: 2}
 --- !u!1 &865848283
 GameObject:
   m_ObjectHideFlags: 0
@@ -4201,7 +4194,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 846620201}
+  - {fileID: 1359010804}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5781,7 +5774,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 2925ab4349f60c848bde8ca10783e26f, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 300, y: -100}
+    size: {x: 100, y: 100}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 1
+    position: {x: 300, y: -100}
+    size: {x: 100, y: 100}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &1167326492
 GameObject:
   m_ObjectHideFlags: 0
@@ -6461,7 +6465,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: f8e498b9b1ac7114db5b82a6c57d4b28, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 4
+    position: {x: 0, y: 0}
+    size: {x: 1920, y: 1920}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &1346716687
 GameObject:
   m_ObjectHideFlags: 0
@@ -6637,7 +6652,7 @@ RectTransform:
   - {fileID: 1021920735}
   - {fileID: 1832523808}
   - {fileID: 1497506287}
-  m_Father: {fileID: 846620201}
+  m_Father: {fileID: 955639891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6716,7 +6731,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 421670e9e69245c4e8f1d6b3a8da12c1, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 0, y: 0}
+    size: {x: 0, y: 0}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 3
+    position: {x: 0, y: 0}
+    size: {x: 1080, y: 1080}
+    scale: {x: 0.75, y: 0.75, z: 0.75}
+    setActive: 1
+  - targetState: 4
+    position: {x: -390, y: 0}
+    size: {x: 1080, y: 1080}
+    scale: {x: 0.6, y: 0.6, z: 0.6}
+    setActive: 1
 --- !u!1 &1378255880
 GameObject:
   m_ObjectHideFlags: 0
@@ -6855,7 +6886,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 0641ee405dadbc94fb7986464d114209, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 300, y: 100}
+    size: {x: 600, y: 200}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
+  uiStateActions:
+  - targetState: 0
+    position: {x: 300, y: 100}
+    size: {x: 600, y: 400}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &1425114325
 GameObject:
   m_ObjectHideFlags: 0
@@ -7847,7 +7889,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: a879f1d5b52a0c540a405aa729c8494e, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 300, y: -200}
+    size: {x: 600, y: 200}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 0
+    position: {x: 300, y: -200}
+    size: {x: 600, y: 200}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &1681518908
 GameObject:
   m_ObjectHideFlags: 0
@@ -9335,7 +9388,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 799af9a9b96769e46a28c3ea77ec408b, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: -300, y: 0}
+    size: {x: 600, y: 600}
+    scale: {x: 0.665, y: 0.665, z: 0.665}
+    setActive: 1
+  uiStateActions:
+  - targetState: 0
+    position: {x: -300, y: 0}
+    size: {x: 600, y: 600}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!1 &1856241343
 GameObject:
   m_ObjectHideFlags: 0
@@ -10537,7 +10601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e86270293f8874e9ef6644f7d22d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curruntState: 0
+  CurruntState: 0
   toStartButton: {fileID: 3777727333363856328}
   startButton: {fileID: 1639063550}
   loginButton: {fileID: 1757054414}
@@ -11124,7 +11188,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd84491f15b3a84a97e852b097c795d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionData: {fileID: 11400000, guid: 5030c15c7227bf644bc2ae53a54f38fd, type: 2}
+  defaultStateAction:
+    targetState: 5
+    position: {x: 50, y: 0}
+    size: {x: 100, y: 400}
+    scale: {x: 0, y: 0, z: 0}
+    setActive: 0
+  uiStateActions:
+  - targetState: 1
+    position: {x: -50, y: 0}
+    size: {x: 100, y: 400}
+    scale: {x: 1, y: 1, z: 1}
+    setActive: 1
 --- !u!114 &7945574639182808823
 MonoBehaviour:
   m_ObjectHideFlags: 0
