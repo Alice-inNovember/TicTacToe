@@ -3933,16 +3933,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af4212102a945f08c52b4303fcef42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showColor: {r: 1, g: 0.7647059, b: 0.13725491, a: 0}
-  hideColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
+  showColor: {r: 1, g: 0.7647059, b: 0.13725491, a: 1}
+  hideColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   targetList:
-  - {fileID: 1951694270}
-  - {fileID: 386199478}
-  - {fileID: 755528459}
-  showColor2: {r: 1, g: 0.46666667, b: 0, a: 0}
-  hideColor2: {r: 0, g: 0, b: 0, a: 0}
-  targetList2:
-  - {fileID: 136762338}
+  - {fileID: 1951694272}
+  - {fileID: 386199480}
+  - {fileID: 755528461}
+  showColor2: {r: 1, g: 0.46666667, b: 0, a: 1}
+  hideColor2: {r: 0, g: 0, b: 0, a: 1}
+  bg: {fileID: 136762340}
 --- !u!1001 &825404464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13861,16 +13860,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af4212102a945f08c52b4303fcef42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showColor: {r: 1, g: 0.03529412, b: 0.3254902, a: 0}
-  hideColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
+  showColor: {r: 1, g: 0.03529412, b: 0.3254902, a: 1}
+  hideColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   targetList:
-  - {fileID: 1271629852}
-  - {fileID: 29692609}
-  - {fileID: 441527656}
-  showColor2: {r: 1, g: 0, b: 0.29803923, a: 0}
-  hideColor2: {r: 0, g: 0, b: 0, a: 0}
-  targetList2:
-  - {fileID: 1798297423}
+  - {fileID: 1271629854}
+  - {fileID: 29692611}
+  - {fileID: 441527658}
+  showColor2: {r: 1, g: 0, b: 0.29803923, a: 1}
+  hideColor2: {r: 0, g: 0, b: 0, a: 1}
+  bg: {fileID: 1798297425}
 --- !u!1 &2129089527
 GameObject:
   m_ObjectHideFlags: 0

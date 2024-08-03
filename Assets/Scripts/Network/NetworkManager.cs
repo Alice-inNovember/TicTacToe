@@ -90,35 +90,28 @@ namespace Network
 		private async void Receive()
 		{
 			while (_client != null)
-				try
+			{
+				var msgTypeBuff = new byte[MsgTypeSize];
+				var msgArgBuff = new byte[MsgArgSize];
+
+				var bytesRead = await _stream.ReadAsync(msgTypeBuff, 0, msgTypeBuff.Length);
+				if (bytesRead < msgTypeBuff.Length)
 				{
-					var msgTypeBuff = new byte[MsgTypeSize];
-					var msgArgBuff = new byte[MsgArgSize];
-
-					var bytesRead = await _stream.ReadAsync(msgTypeBuff, 0, msgTypeBuff.Length);
-					if (bytesRead < msgTypeBuff.Length)
-					{
-						DisconnectServer();
-						EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
-						break;
-					}
-
-					bytesRead = await _stream.ReadAsync(msgArgBuff, 0, msgArgBuff.Length);
-					if (bytesRead < msgArgBuff.Length)
-					{
-						DisconnectServer();
-						EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
-						break;
-					}
-
-					OnMessageReceived(new Message(msgTypeBuff, msgArgBuff));
-				}
-				catch (Exception ex)
-				{
-					Debug.Log($"Receive Error: {ex.Message}");
 					DisconnectServer();
+					EventManager.Instance.PostNotification(EEventType.ServerConnection, this,
+						EConnectResult.Disconnect);
 					break;
 				}
+				bytesRead = await _stream.ReadAsync(msgArgBuff, 0, msgArgBuff.Length);
+				if (bytesRead < msgArgBuff.Length)
+				{
+					DisconnectServer();
+					EventManager.Instance.PostNotification(EEventType.ServerConnection, this,
+						EConnectResult.Disconnect);
+					break;
+				}
+				OnMessageReceived(new Message(msgTypeBuff, msgArgBuff));
+			}
 		}
 
 		private void OnMessageReceived(Message msg)

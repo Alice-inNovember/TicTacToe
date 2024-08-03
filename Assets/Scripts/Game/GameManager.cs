@@ -65,7 +65,7 @@ namespace Game
 		public void GameStart()
 		{
 			turn = TileType.O;
-			UIManager.Instance.SetCurrentTurnText();
+			UIManager.Instance.SetGameUIHighlight();
 			Debug.Log("Start!");
 			EventManager.Instance.PostNotification(EEventType.GameStart, this);
 			state = EGameState.InGame;
@@ -75,7 +75,7 @@ namespace Game
 		{
 			Instance.turn = Instance.turn == TileType.O ? TileType.X : TileType.O;
 			EventManager.Instance.PostNotification(EEventType.TurnSwap, this);
-			UIManager.Instance.SetCurrentTurnText();
+			UIManager.Instance.SetGameUIHighlight();
 		}
 
 		public void GameOver(TileType winnerTileType)

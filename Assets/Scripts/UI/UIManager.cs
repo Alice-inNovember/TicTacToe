@@ -58,7 +58,6 @@ namespace UI
 			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
 			EventManager.Instance.AddListener(EEventType.UIStateChange, this);
 			EventManager.Instance.AddListener(EEventType.GameStart, this);
-			EventManager.Instance.AddListener(EEventType.TurnSwap, this);
 			toStartButton.onClick.AddListener(() =>
 				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
 			startButton.onClick.AddListener(() =>
@@ -72,20 +71,6 @@ namespace UI
 				GameManager.Instance.SetGameState(EGameState.PreLogin);
 				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
 			});
-		}
-
-		public void SetGameUIHighlight()
-		{
-			if (GameManager.Instance.playerTileType == GameManager.Instance.turn)
-			{
-				playerUIVisualController.Show();
-				enemyUIVisualController.Hide();
-			}
-			else if (GameManager.Instance.enemyTileType  == GameManager.Instance.turn)
-			{
-				playerUIVisualController.Hide();
-				enemyUIVisualController.Show();
-			}
 		}
 
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
@@ -105,9 +90,6 @@ namespace UI
 					if (param != null)
 						CurruntState = (EuiState)param;
 					break;
-				case EEventType.TurnSwap:
-					SetGameUIHighlight();
-					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
 			}
@@ -123,10 +105,19 @@ namespace UI
 			enemyTimerText.text = enemyType == TileType.O ? oTimeText : xTimeText;
 		}
 
-		public void SetCurrentTurnText()
+		public void SetGameUIHighlight()
 		{
-			// var type = GameManager.Instance.turn == TileType.O ? "O" : "X";
-			// currentTurnText.text = new string($"{type}'s\nTurn");
+			Debug.Log("SetGameUIHighlight");
+			if (GameManager.Instance.playerTileType == GameManager.Instance.turn)
+			{
+				playerUIVisualController.Show();
+				enemyUIVisualController.Hide();
+			}
+			else if (GameManager.Instance.enemyTileType == GameManager.Instance.turn)
+			{
+				playerUIVisualController.Hide();
+				enemyUIVisualController.Show();
+			}
 		}
 
 		public void SetEnemyTypeText()
