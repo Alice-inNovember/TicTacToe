@@ -72,13 +72,15 @@ namespace Game
 
 		public void GameOver(TileType winnerTileType)
 		{
+			if (state != EGameState.InGame)
+				return;
 			state = EGameState.PostGame;
-			if (winnerTileType == TileType.Null)
-				SoundSystem.Instance.PlaySFX(ESoundClip.GameDraw);
-			if (winnerTileType == playerTileType)
+			if (winnerTileType == enemyTileType)
+				SoundSystem.Instance.PlaySFX(ESoundClip.GameLose);
+			else if (winnerTileType == playerTileType)
 				SoundSystem.Instance.PlaySFX(ESoundClip.GameWin);
 			else
-				SoundSystem.Instance.PlaySFX(ESoundClip.GameLose);
+				SoundSystem.Instance.PlaySFX(ESoundClip.GameDraw);
 			UIManager.Instance.SetResultInfo(winnerTileType);
 			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Result);
 			EventManager.Instance.PostNotification(EEventType.GameOver, this, EuiState.Result);
