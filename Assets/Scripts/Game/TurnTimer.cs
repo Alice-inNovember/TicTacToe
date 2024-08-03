@@ -10,6 +10,8 @@ namespace Game
 		public float XTime { get; private set; }
 
 		public float OTime { get; private set; }
+		
+		private Coroutine timer;
 
 		private void Start()
 		{
@@ -25,10 +27,10 @@ namespace Game
 				case EEventType.GameStart:
 					XTime = GameManager.Instance.gameTimerTime;
 					OTime = GameManager.Instance.gameTimerTime;
-					StartCoroutine(Timer(TileType.O));
+					timer = StartCoroutine(Timer(TileType.O));
 					break;
 				case EEventType.GameOver:
-					StopCoroutine(Timer(TileType.Null));
+					StopCoroutine(timer);
 					break;
 				case EEventType.TurnSwap:
 					SwapTimer();
@@ -38,7 +40,7 @@ namespace Game
 
 		private void SwapTimer()
 		{
-			StopCoroutine(Timer(TileType.Null));
+			StopCoroutine(timer);
 			StartCoroutine(Timer(GameManager.Instance.turn));
 		}
 
@@ -47,6 +49,8 @@ namespace Game
 			yield return new WaitForSeconds(0.5f);
 			while (GameManager.Instance.state == EGameState.InGame)
 			{
+				if (GameManager.Instance.turn != TargetType)
+					yield break;
 				yield return new WaitForSeconds(0.25f);
 				switch (TargetType)
 				{
