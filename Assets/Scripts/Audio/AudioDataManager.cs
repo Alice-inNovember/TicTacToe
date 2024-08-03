@@ -33,7 +33,7 @@ namespace Audio
 
 			if (!File.Exists(filePath))
 			{
-				AudioVolume.Master = 0f;
+				AudioVolume.Master = -10f;
 				AudioVolume.Bgm = -10f;
 				AudioVolume.Sfx = -10f;
 				SaveAudioData();

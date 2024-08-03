@@ -91,6 +91,7 @@ namespace Game
 			{
 				SetBlock(tileType, false);
 				_isComplete = true;
+				
 				SoundSystem.Instance.PlaySFX(ESoundClip.BlockComplete);
 			}
 

@@ -65,7 +65,7 @@ namespace Game
 			if (hwo == GameManager.Instance.playerTileType)
 				NetworkManager.Instance.Send(new Message(EMessageType.MT_USER_ACTION, new string($"{id.x},{id.y}")));
 			TileSet(id);
-			TurnSwap();
+			GameManager.Instance.TurnSwap();
 			CheckComplete();
 		}
 
@@ -108,16 +108,6 @@ namespace Game
 				SetAllBlockInteractable();
 				tileBlocks[nextBlockID].SetBlock(tileBlocks[nextBlockID].Type, true);
 			}
-		}
-
-		private void TurnSwap()
-		{
-			if (GameManager.Instance.turn == TileType.O)
-				GameManager.Instance.turn = TileType.X;
-			else
-				GameManager.Instance.turn = TileType.O;
-			EventManager.Instance.PostNotification(EEventType.TurnSwap, this);
-			UIManager.Instance.SetCurrentTurnText();
 		}
 
 		public void CheckComplete()

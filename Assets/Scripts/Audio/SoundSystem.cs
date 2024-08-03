@@ -26,6 +26,11 @@ namespace Audio
                 return;
             sfxSource.PlayOneShot(targetClip);
         }
+
+        public void StopSFX()
+        {
+            sfxSource.Stop();
+        }
     }
 
     public enum ESoundClip

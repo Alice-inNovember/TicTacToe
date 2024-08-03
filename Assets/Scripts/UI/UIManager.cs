@@ -40,7 +40,8 @@ namespace UI
 		private TMP_InputField loginInput;
 
 		[Header("InGameUI")] [SerializeField] private TMP_Text enemyTypeText;
-
+		[SerializeField] private UIVisualController playerUIVisualController;
+		[SerializeField] private UIVisualController enemyUIVisualController;
 		[SerializeField] private TMP_Text enemyNameText;
 		[SerializeField] private TMP_Text playerTypeText;
 		[SerializeField] private TMP_Text playerNameText;
@@ -56,6 +57,8 @@ namespace UI
 			EventManager.Instance.AddListener(EEventType.ProgramStart, this);
 			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
 			EventManager.Instance.AddListener(EEventType.UIStateChange, this);
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.TurnSwap, this);
 			toStartButton.onClick.AddListener(() =>
 				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
 			startButton.onClick.AddListener(() =>
@@ -71,11 +74,28 @@ namespace UI
 			});
 		}
 
+		public void SetGameUIHighlight()
+		{
+			if (GameManager.Instance.playerTileType == GameManager.Instance.turn)
+			{
+				playerUIVisualController.Show();
+				enemyUIVisualController.Hide();
+			}
+			else if (GameManager.Instance.enemyTileType  == GameManager.Instance.turn)
+			{
+				playerUIVisualController.Hide();
+				enemyUIVisualController.Show();
+			}
+		}
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
 			{
 				case EEventType.ProgramStart:
+					break;
+				case EEventType.GameStart:
+					SetGameUIHighlight();
 					break;
 				case EEventType.ServerConnection:
 					if (param != null)
@@ -84,6 +104,9 @@ namespace UI
 				case EEventType.UIStateChange:
 					if (param != null)
 						CurruntState = (EuiState)param;
+					break;
+				case EEventType.TurnSwap:
+					SetGameUIHighlight();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);

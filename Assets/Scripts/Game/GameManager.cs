@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Audio;
 using Network;
 using UI;
@@ -69,12 +70,21 @@ namespace Game
 			EventManager.Instance.PostNotification(EEventType.GameStart, this);
 			state = EGameState.InGame;
 		}
+		
+		public void TurnSwap()
+		{
+			Instance.turn = Instance.turn == TileType.O ? TileType.X : TileType.O;
+			EventManager.Instance.PostNotification(EEventType.TurnSwap, this);
+			UIManager.Instance.SetCurrentTurnText();
+		}
 
 		public void GameOver(TileType winnerTileType)
 		{
 			if (state != EGameState.InGame)
 				return;
 			state = EGameState.PostGame;
+			
+			SoundSystem.Instance.StopSFX();
 			if (winnerTileType == enemyTileType)
 				SoundSystem.Instance.PlaySFX(ESoundClip.GameLose);
 			else if (winnerTileType == playerTileType)
@@ -86,7 +96,7 @@ namespace Game
 			EventManager.Instance.PostNotification(EEventType.GameOver, this, EuiState.Result);
 			NetworkManager.Instance.DisconnectServer();
 		}
-
+		
 		private void ServerConnectionAction(EConnectResult connectResult)
 		{
 			switch (connectResult)
