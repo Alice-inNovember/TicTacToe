@@ -46,23 +46,26 @@ namespace Network
 				Debug.Log("연결 실패: 타임아웃");
 				DisconnectServer();
 				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.TimeOut);
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 			}
 			catch (Exception ex)
 			{
 				Debug.Log($"연결 실패: {ex.Message}");
 				DisconnectServer();
 				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Error);
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 			}
 		}
+
 		public void DisconnectServer()
 		{
-			EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 			Debug.Log("Server disconnected");
 			_stream?.Dispose();
 			_client?.Dispose();
 			_stream = null;
 			_client = null;
 		}
+
 		public async Task Send(Message msg)
 		{
 			Debug.Log($"Message Send : Type={msg.Type().ToString()}, Arg={msg.Arg()}");
@@ -71,6 +74,7 @@ namespace Network
 				Debug.Log("서버에 연결되어 있지 않습니다.");
 				return;
 			}
+
 			try
 			{
 				await _stream.WriteAsync(msg.Byte(), 0, MsgTotalSize);
@@ -79,12 +83,13 @@ namespace Network
 			{
 				Debug.Log($"Send Error: {ex.Message}");
 				DisconnectServer();
+				EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 			}
 		}
+
 		private async void Receive()
 		{
 			while (_client != null)
-			{
 				try
 				{
 					var msgTypeBuff = new byte[MsgTypeSize];
@@ -94,14 +99,18 @@ namespace Network
 					if (bytesRead < msgTypeBuff.Length)
 					{
 						DisconnectServer();
+						EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 						break;
 					}
+
 					bytesRead = await _stream.ReadAsync(msgArgBuff, 0, msgArgBuff.Length);
 					if (bytesRead < msgArgBuff.Length)
 					{
 						DisconnectServer();
+						EventManager.Instance.PostNotification(EEventType.ServerConnection, this, EConnectResult.Disconnect);
 						break;
 					}
+
 					OnMessageReceived(new Message(msgTypeBuff, msgArgBuff));
 				}
 				catch (Exception ex)
@@ -110,8 +119,8 @@ namespace Network
 					DisconnectServer();
 					break;
 				}
-			}
 		}
+
 		private void OnMessageReceived(Message msg)
 		{
 			Debug.Log($"Message Received : Type={msg.Type().ToString()}, Arg={msg.Arg()}");
@@ -138,13 +147,14 @@ namespace Network
 					break;
 				case EMessageType.MT_USER_ACTION:
 					var temp = msg.Arg().Split(",");
-					var id = new Vector2Int(int.Parse(temp[0]),int.Parse(temp[1]));
+					var id = new Vector2Int(int.Parse(temp[0]), int.Parse(temp[1]));
 					EventManager.Instance.PostNotification(EEventType.EnemyTileClicked, this, id);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
+
 		~NetworkManager()
 		{
 			_stream?.Dispose();

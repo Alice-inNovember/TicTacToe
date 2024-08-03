@@ -18,57 +18,59 @@ namespace UI
 		Result,
 		Default
 	}
+
 	public class UIManager : MonoBehaviourSingleton<UIManager>, IEventListener
 	{
-		[Header("Info")]
-		public EuiState CurruntState;
-		
-		[Header("Buttons")]
-		[SerializeField] private Button toStartButton;
+		public const float AnimationTime = 0.5f;
+
+		[Header("Info")] public EuiState CurruntState;
+
+		[Header("Buttons")] [SerializeField] private Button toStartButton;
+
 		[SerializeField] private Button startButton;
 		[SerializeField] private Button loginButton;
 		[SerializeField] private Button matchButton;
-	
-		[Header("Texts")]
-		[SerializeField] private TMP_Text loginResultText;
+
+		[Header("Texts")] [SerializeField] private TMP_Text loginResultText;
+
 		[SerializeField] private TMP_Text matchTimeText;
 		[SerializeField] private TMP_Text activeUserText;
-	
-		[Header("InputFields")]
-		[SerializeField] private TMP_InputField loginInput;
 
-		[Header("InGameUI")]
-		[SerializeField] private TMP_Text currentTurnText;
-		[SerializeField] private TMP_Text gameTimeText;
-		[SerializeField] private TMP_Text enemyTypeText;
+		[Header("InputFields")] [SerializeField]
+		private TMP_InputField loginInput;
+
+		[Header("InGameUI")] [SerializeField] private TMP_Text enemyTypeText;
+
 		[SerializeField] private TMP_Text enemyNameText;
 		[SerializeField] private TMP_Text playerTypeText;
 		[SerializeField] private TMP_Text playerNameText;
+		[SerializeField] private TMP_Text playerTimerText;
+		[SerializeField] private TMP_Text enemyTimerText;
 
-		[Header("ResultUI")]
-		[SerializeField] private TMP_Text resultText;
+		[Header("ResultUI")] [SerializeField] private TMP_Text resultText;
+
 		[SerializeField] private Button toLobbyButton;
-
-		public const float AnimationTime = 0.5f;
 
 		private void Start()
 		{
 			EventManager.Instance.AddListener(EEventType.ProgramStart, this);
 			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
 			EventManager.Instance.AddListener(EEventType.UIStateChange, this);
-			toStartButton.onClick.AddListener(()=>EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
-			startButton.onClick.AddListener(()=> EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login));
+			toStartButton.onClick.AddListener(() =>
+				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Start));
+			startButton.onClick.AddListener(() =>
+				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login));
 			loginButton.onClick.AddListener(LoginButton);
 			matchButton.onClick.AddListener(MatchMaking.Instance.StartMachMaking);
 			toLobbyButton.onClick.AddListener(() =>
 			{
-				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
-				GameManager.Instance.SetGameState(EGameState.PreLogin);
 				NetworkManager.Instance.DisconnectServer();
 				EventManager.Instance.PostNotification(EEventType.Reset, this);
+				GameManager.Instance.SetGameState(EGameState.PreLogin);
+				EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Login);
 			});
 		}
-		
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
@@ -87,37 +89,45 @@ namespace UI
 					throw new ArgumentOutOfRangeException(nameof(eventType), eventType, null);
 			}
 		}
-		
+
+		public void SetTimerText(int oTime, int xTime)
+		{
+			var playerType = GameManager.Instance.playerTileType;
+			var enemyType = GameManager.Instance.enemyTileType;
+			var oTimeText = oTime.ToString();
+			var xTimeText = xTime.ToString();
+			playerTimerText.text = playerType == TileType.O ? oTimeText : xTimeText;
+			enemyTimerText.text = enemyType == TileType.O ? oTimeText : xTimeText;
+		}
+
 		public void SetCurrentTurnText()
 		{
-			var type = GameManager.Instance.turn == TileType.O ? "O" : "X";
-			currentTurnText.text = new string($"{type}'s\nTurn");
+			// var type = GameManager.Instance.turn == TileType.O ? "O" : "X";
+			// currentTurnText.text = new string($"{type}'s\nTurn");
 		}
-		public void SetGameTimeText(int second)
-		{
-			var min = (second / 60).ToString("00");
-			var sec = (second % 60).ToString("00");
-			var text = new string($"Time\n{min}:{sec}");
-			gameTimeText.text = text;
-		}
+
 		public void SetEnemyTypeText()
 		{
 			var type = GameManager.Instance.enemyTileType == TileType.O ? "O" : "X";
 			enemyTypeText.text = type;
 		}
+
 		public void SetEnemyName(string enemyName)
 		{
 			enemyNameText.text = enemyName;
 		}
+
 		public void SetPlayerTypeText()
 		{
 			var type = GameManager.Instance.playerTileType == TileType.O ? "O" : "X";
 			playerTypeText.text = type;
 		}
+
 		public void SetPlayerName(string playerName)
 		{
 			playerNameText.text = playerName;
 		}
+
 		private void LoginButton()
 		{
 			if (loginInput.text.Length == 0)
@@ -125,19 +135,22 @@ namespace UI
 				loginResultText.text = "Enter Name And Try Again";
 				return;
 			}
+
 			loginResultText.text = "Connecting...";
 			GameManager.Instance.playerName = loginInput.text;
 			NetworkManager.Instance.TryConnectServer(loginInput.text);
 		}
-		
+
 		public void SetActiveUserText(string number)
 		{
 			activeUserText.text = "ActiveUser : " + number;
 		}
+
 		public void SetMatchMakingText(int second)
 		{
 			matchTimeText.text = "MatchQ  " + (second / 60).ToString("00") + ":" + (second % 60).ToString("00");
 		}
+
 		private void ServerConnectionAction(EConnectResult result)
 		{
 			switch (result)
@@ -162,12 +175,13 @@ namespace UI
 					throw new ArgumentOutOfRangeException(nameof(result), result, null);
 			}
 		}
+
 		public void SetResultInfo(TileType winner)
 		{
 			if (winner == TileType.Null)
 				resultText.text = "Draw";
 			else
-				resultText.text = (winner == GameManager.Instance.playerTileType ? "You Win" : "You Lose");
+				resultText.text = winner == GameManager.Instance.playerTileType ? "You Win" : "You Lose";
 		}
 	}
 }

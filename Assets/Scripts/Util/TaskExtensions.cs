@@ -14,6 +14,7 @@ namespace Util
 				if (task != await Task.WhenAny(task, tcs.Task))
 					throw new OperationCanceledException(cancellationToken);
 			}
+
 			await task;
 		}
 
@@ -25,6 +26,7 @@ namespace Util
 				if (task != await Task.WhenAny(task, tcs.Task))
 					throw new OperationCanceledException(cancellationToken);
 			}
+
 			return await task;
 		}
 	}

@@ -5,11 +5,13 @@
 		ProgramStart,
 		ServerConnection,
 		GameStart,
+		GameOver,
 		Reset,
 		PlayerTileClicked,
 		EnemyTileClicked,
 		TilePointerEnter,
 		TilePointerExit,
-		UIStateChange
+		UIStateChange,
+		TurnSwap
 	}
 }

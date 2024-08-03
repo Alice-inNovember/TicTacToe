@@ -7,6 +7,6 @@ namespace Game
 	{
 		Null = 0,
 		O,
-		X,
+		X
 	}
 }

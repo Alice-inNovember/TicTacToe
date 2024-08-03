@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Util.EventSystem;
 
 namespace Game
 {
 	public class TileBlock : MonoBehaviour, IEventListener
 	{
-		public List<Tile> Tiles => tiles;
-		public TileType Type { get; private set; }
 		[SerializeField] private List<Tile> tiles;
 		[SerializeField] private GameObject panel;
 		[SerializeField] public int id;
@@ -19,9 +17,20 @@ namespace Game
 		[SerializeField] private GameObject focus;
 
 		private bool _isComplete;
+		public List<Tile> Tiles => tiles;
+		public TileType Type { get; private set; }
+
+		public void Start()
+		{
+			EventManager.Instance.AddListener(EEventType.GameStart, this);
+			EventManager.Instance.AddListener(EEventType.Reset, this);
+
+			for (var i = 0; i < 9; i++) tiles[i].Init(new Vector2Int(id, i));
+		}
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
-			switch(eventType)
+			switch (eventType)
 			{
 				case EEventType.ProgramStart:
 					break;
@@ -43,17 +52,6 @@ namespace Game
 			}
 		}
 
-		public void Start()
-		{
-			EventManager.Instance.AddListener(EEventType.GameStart, this);
-			EventManager.Instance.AddListener(EEventType.Reset, this);
-
-			for (var i = 0; i < 9 ; i++)
-			{
-				tiles[i].Init(new Vector2Int(id, i));
-			}
-		}
-
 		public void CheckComplete()
 		{
 			var tileType = TileType.Null;
@@ -62,7 +60,7 @@ namespace Game
 				var h = 3 * i;
 				var v = i;
 				Debug.Log($"H {h} V {v}");
-				
+
 				//가로 세로 체크
 				if (Tiles[h].Type == Tiles[h + 1].Type && Tiles[h].Type == Tiles[h + 2].Type)
 					tileType = Tiles[h].Type;
@@ -72,6 +70,7 @@ namespace Game
 				if (tileType != TileType.Null)
 					break;
 			}
+
 			if (tileType == TileType.Null)
 			{
 				//대각선
@@ -80,18 +79,21 @@ namespace Game
 				else if (Tiles[2].Type == Tiles[4].Type && Tiles[2].Type == Tiles[6].Type)
 					tileType = Tiles[2].Type;
 			}
+
 			//무승부
-			if(tileType == TileType.Null && tiles.Count(tile => tile.Type == TileType.Null) == 0)
+			if (tileType == TileType.Null && tiles.Count(tile => tile.Type == TileType.Null) == 0)
 			{
 				SetBlock(TileType.Null, false);
 				_isComplete = true;
-			} 
+			}
 			//결과
 			else if (tileType != TileType.Null)
 			{
 				SetBlock(tileType, false);
 				_isComplete = true;
+				SoundSystem.Instance.PlaySFX(ESoundClip.BlockComplete);
 			}
+
 			Debug.Log("Result _isComplete : " + _isComplete);
 		}
 
@@ -126,10 +128,7 @@ namespace Game
 
 		public void ResetHilight()
 		{
-			foreach (var tile in Tiles)
-			{
-				tile.SetHighlight(false);
-			}
+			foreach (var tile in Tiles) tile.SetHighlight(false);
 		}
 	}
 }

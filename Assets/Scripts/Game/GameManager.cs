@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Threading;
-using System.Threading.Tasks;
+using Audio;
 using Network;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Util.EventSystem;
 using Util.SingletonSystem;
 
@@ -28,7 +25,16 @@ namespace Game
 		public TileType enemyTileType;
 		public TileType turn;
 		public string playerName;
-	
+		public float gameTimerTime;
+
+		private void Start()
+		{
+			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
+			Application.runInBackground = true;
+			state = EGameState.PreLogin;
+			playerTileType = TileType.Null;
+		}
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			switch (eventType)
@@ -50,19 +56,11 @@ namespace Game
 			}
 		}
 
-		private void Start()
-		{
-			EventManager.Instance.AddListener(EEventType.ServerConnection, this);
-			Application.runInBackground = true;
-			state = EGameState.PreLogin;
-			playerTileType = TileType.Null;
-		}
-
 		public void SetGameState(EGameState gameState)
 		{
 			state = gameState;
 		}
-		
+
 		public void GameStart()
 		{
 			turn = TileType.O;
@@ -71,14 +69,22 @@ namespace Game
 			EventManager.Instance.PostNotification(EEventType.GameStart, this);
 			state = EGameState.InGame;
 		}
-		
+
 		public void GameOver(TileType winnerTileType)
 		{
 			state = EGameState.PostGame;
+			if (winnerTileType == TileType.Null)
+				SoundSystem.Instance.PlaySFX(ESoundClip.GameDraw);
+			if (winnerTileType == playerTileType)
+				SoundSystem.Instance.PlaySFX(ESoundClip.GameWin);
+			else
+				SoundSystem.Instance.PlaySFX(ESoundClip.GameLose);
 			UIManager.Instance.SetResultInfo(winnerTileType);
-			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Result); 
+			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.Result);
+			EventManager.Instance.PostNotification(EEventType.GameOver, this, EuiState.Result);
+			NetworkManager.Instance.DisconnectServer();
 		}
-	
+
 		private void ServerConnectionAction(EConnectResult connectResult)
 		{
 			switch (connectResult)

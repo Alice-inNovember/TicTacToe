@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Audio;
 using Network;
 using UI;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Game
 	public class MatchMaking : MonoBehaviourSingleton<MatchMaking>
 	{
 		private CancellationTokenSource _matchTimeCountCancelToken;
+
 		public async void StartMachMaking()
 		{
 			if (GameManager.Instance.state != EGameState.Lobby)
@@ -20,7 +22,7 @@ namespace Game
 			MatchMakingTimeCount();
 			await NetworkManager.Instance.Send(new Message(EMessageType.MT_MATCHQ_JOIN, ""));
 		}
-		
+
 		public void MatchFound(string matchInfo)
 		{
 			var arg = matchInfo.Split('|');
@@ -33,21 +35,25 @@ namespace Game
 				"X" => TileType.X,
 				_ => GameManager.Instance.playerTileType
 			};
-			GameManager.Instance.enemyTileType = GameManager.Instance.playerTileType == TileType.O ? TileType.X : TileType.O;
+			GameManager.Instance.enemyTileType =
+				GameManager.Instance.playerTileType == TileType.O ? TileType.X : TileType.O;
 			UIManager.Instance.SetEnemyName(enemyName);
 			UIManager.Instance.SetEnemyTypeText();
 			UIManager.Instance.SetPlayerName(GameManager.Instance.playerName);
 			UIManager.Instance.SetPlayerTypeText();
+			SoundSystem.Instance.PlaySFX(ESoundClip.MatchFound);
 			EventManager.Instance.PostNotification(EEventType.UIStateChange, this, EuiState.InGame);
 			Debug.Log("My type : " + playerType + " | EnemyName : " + enemyName);
 			GameManager.Instance.state = EGameState.PreGame;
 			GameManager.Instance.GameStart();
 		}
+
 		public void MatchStop()
 		{
 			_matchTimeCountCancelToken?.Cancel();
 			GameManager.Instance.state = EGameState.Lobby;
 		}
+
 		private async void MatchMakingTimeCount()
 		{
 			Debug.Log("MatchMakingTimeCount");

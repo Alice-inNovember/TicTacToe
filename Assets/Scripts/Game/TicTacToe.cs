@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Audio;
 using Network;
 using UI;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Game
 			EventManager.Instance.AddListener(EEventType.TilePointerEnter, this);
 			EventManager.Instance.AddListener(EEventType.TilePointerExit, this);
 		}
+
 		public void OnEvent(EEventType eventType, Component sender, object param = null)
 		{
 			Debug.Log(eventType);
@@ -55,9 +57,11 @@ namespace Game
 		{
 			if (GameManager.Instance.turn != hwo)
 			{
+				SoundSystem.Instance.PlaySFX(ESoundClip.ActionError);
 				Debug.Log("Invalid Turn");
 				return;
 			}
+			SoundSystem.Instance.PlaySFX(ESoundClip.Action);
 			if (hwo == GameManager.Instance.playerTileType)
 				NetworkManager.Instance.Send(new Message(EMessageType.MT_USER_ACTION, new string($"{id.x},{id.y}")));
 			TileSet(id);
@@ -74,24 +78,15 @@ namespace Game
 		private void SetFocus(Vector2Int id)
 		{
 			if (tileBlocks[id.y].IsComplete())
-			{
 				foreach (var tileBlock in tileBlocks)
-				{
 					tileBlock.SetFocusActive(true);
-				}
-			}
 			else
-			{
 				tileBlocks[id.y].SetFocusActive(true);
-			}
 		}
 
 		private void ResetFocus()
 		{
-			foreach (var tileBlock in tileBlocks)
-			{
-				tileBlock.SetFocusActive(false);
-			}
+			foreach (var tileBlock in tileBlocks) tileBlock.SetFocusActive(false);
 		}
 
 		private void TileSet(Vector2Int id)
@@ -121,6 +116,7 @@ namespace Game
 				GameManager.Instance.turn = TileType.X;
 			else
 				GameManager.Instance.turn = TileType.O;
+			EventManager.Instance.PostNotification(EEventType.TurnSwap, this);
 			UIManager.Instance.SetCurrentTurnText();
 		}
 
@@ -135,7 +131,7 @@ namespace Game
 				var h = 3 * i;
 				var v = i;
 				Debug.Log($"H {h} V {v}");
-				
+
 				//가로 세로 체크
 				if (tileBlocks[h].Type == tileBlocks[h + 1].Type && tileBlocks[h].Type == tileBlocks[h + 2].Type)
 					tileType = tileBlocks[h].Type;
@@ -145,6 +141,7 @@ namespace Game
 				if (tileType != TileType.Null)
 					break;
 			}
+
 			if (tileType == TileType.Null)
 			{
 				//대각선
@@ -153,6 +150,7 @@ namespace Game
 				else if (tileBlocks[2].Type == tileBlocks[4].Type && tileBlocks[2].Type == tileBlocks[6].Type)
 					tileType = tileBlocks[2].Type;
 			}
+
 			//결과
 			if (tileType == TileType.Null)
 				return;
